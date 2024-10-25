@@ -12,7 +12,7 @@
 
 # Current Theme
 dir="$HOME/.config/rofi/powermenu/type-2"
-theme='style-1'
+theme='style-7'
 
 # CMDs
 uptime="`uptime -p | sed -e 's/up //g'`"
@@ -32,7 +32,12 @@ rofi_cmd() {
 	rofi -dmenu \
 		-p "Uptime: $uptime" \
 		-mesg "Uptime: $uptime" \
-		-theme ${dir}/${theme}.rasi
+		-theme ${dir}/${theme}.rasi \
+		-kb-select-1 'x' \
+		-kb-select-2 'u' \
+		-kb-select-3 'q' \
+		-kb-select-4 'r' \
+        -kb-select-5 's'
 }
 
 # Confirmation CMD
@@ -45,7 +50,9 @@ confirm_cmd() {
 		-dmenu \
 		-p 'Confirmation' \
 		-mesg 'Are you Sure?' \
-		-theme ${dir}/${theme}.rasi
+		-theme ${dir}/${theme}.rasi \
+		-kb-select-1 'y' \
+        -kb-select-2 'n'
 }
 
 # Ask for confirmation
