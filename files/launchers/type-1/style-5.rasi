@@ -9,7 +9,7 @@
 
 /*****----- Configuration -----*****/
 configuration {
-	modi:                       "drun,run,filebrowser,window";
+	modi:                       "drun,run,window";
     show-icons:                 true;
     display-drun:               "";
     display-run:                "";
@@ -104,7 +104,7 @@ inputbar {
     border-color:                @border-colour;
     background-color:            transparent;
     text-color:                  @foreground-colour;
-    children:                    [ "textbox-prompt-colon", "entry", "mode-switcher" ];
+    children:                    [ "textbox-prompt-colon", "entry" ];
 }
 
 prompt {
