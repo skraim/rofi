@@ -103,7 +103,7 @@ case ${chosen} in
 		run_cmd --reboot
         ;;
     $lock)
-		if [[ -x '/usr/bin/betterlockscreen' ]]; then
+		if [[ -x '/usr/bin/betterlockscreen' || -x "$HOME/.local/bin" ]]; then
 			betterlockscreen -l dim --off 30
 		elif [[ -x '/usr/bin/i3lock' ]]; then
 			i3lock
