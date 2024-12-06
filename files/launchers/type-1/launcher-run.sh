@@ -17,4 +17,5 @@ theme='style-5'
 ## Run
 rofi \
     -show run \
+    -theme-str 'textbox-prompt-colon {str: " ";}' \
     -theme ${dir}/${theme}.rasi
