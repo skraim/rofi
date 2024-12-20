@@ -13,6 +13,7 @@
 
 dir="$HOME/.config/rofi/launchers/type-1"
 theme='style-5'
+source "$HOME/.bashrc"
 
 ## Run
 rofi \
