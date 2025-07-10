@@ -29,94 +29,94 @@ no=''
 
 # Rofi CMD
 rofi_cmd() {
-	rofi -dmenu \
-		-p "Uptime: $uptime" \
-		-mesg "Uptime: $uptime" \
-		-theme ${dir}/${theme}.rasi \
-		-kb-select-1 'x' \
-		-kb-select-2 'u' \
-		-kb-select-3 'q' \
-		-kb-select-4 'r' \
+    rofi -dmenu \
+        -p "Uptime: $uptime" \
+        -mesg "Uptime: $uptime" \
+        -theme ${dir}/${theme}.rasi \
+        -kb-select-1 'x' \
+        -kb-select-2 'u' \
+        -kb-select-3 'q' \
+        -kb-select-4 'r' \
         -kb-select-5 's'
-}
+    }
 
 # Confirmation CMD
 confirm_cmd() {
-	rofi -theme-str 'window {location: center; anchor: center; fullscreen: false; width: 350px;}' \
-		-theme-str 'mainbox {children: [ "message", "listview" ];}' \
-		-theme-str 'listview {columns: 2; lines: 1;}' \
-		-theme-str 'element-text {horizontal-align: 0.5;}' \
-		-theme-str 'textbox {horizontal-align: 0.5;}' \
-		-dmenu \
-		-p 'Confirmation' \
-		-mesg 'Are you Sure?' \
-		-theme ${dir}/${theme}.rasi \
-		-kb-select-1 'y' \
+    rofi -theme-str 'window {location: center; anchor: center; fullscreen: false; width: 350px;}' \
+        -theme-str 'mainbox {children: [ "message", "listview" ];}' \
+        -theme-str 'listview {columns: 2; lines: 1;}' \
+        -theme-str 'element-text {horizontal-align: 0.5;}' \
+        -theme-str 'textbox {horizontal-align: 0.5;}' \
+        -dmenu \
+        -p 'Confirmation' \
+        -mesg 'Are you Sure?' \
+        -theme ${dir}/${theme}.rasi \
+        -kb-select-1 'y' \
         -kb-select-2 'n'
-}
+    }
 
 # Ask for confirmation
 confirm_exit() {
-	echo -e "$yes\n$no" | confirm_cmd
+    echo -e "$yes\n$no" | confirm_cmd
 }
 
 # Pass variables to rofi dmenu
 run_rofi() {
-	echo -e "$lock\n$suspend\n$logout\n$reboot\n$shutdown" | rofi_cmd
+    echo -e "$lock\n$suspend\n$logout\n$reboot\n$shutdown" | rofi_cmd
 }
 
 # Execute Command
 run_cmd() {
-	selected="$(confirm_exit)"
-	if [[ "$selected" == "$yes" ]]; then
-		if [[ $1 == '--shutdown' ]]; then
-            ~/scripts/fastfetch-screen.sh; systemctl poweroff
-		elif [[ $1 == '--reboot' ]]; then
-			~/scripts/fastfetch-screen.sh; systemctl reboot
-		elif [[ $1 == '--suspend' ]]; then
-			mpc -q pause
-			amixer set Master mute
-			systemctl suspend
-		elif [[ $1 == '--logout' ]]; then
-			if [[ "$DESKTOP_SESSION" == 'openbox' ]]; then
-				openbox --exit
-			elif [[ "$DESKTOP_SESSION" == 'bspwm' ]]; then
-				bspc quit
-			elif [[ "$DESKTOP_SESSION" == 'i3' ]]; then
-				i3-msg exit
-			elif [[ "$DESKTOP_SESSION" == 'hyprland' ]]; then
+    selected="$(confirm_exit)"
+    if [[ "$selected" == "$yes" ]]; then
+        if [[ $1 == '--shutdown' ]]; then
+            systemctl poweroff
+        elif [[ $1 == '--reboot' ]]; then
+            systemctl reboot
+        elif [[ $1 == '--suspend' ]]; then
+            mpc -q pause
+            amixer set Master mute
+            systemctl suspend
+        elif [[ $1 == '--logout' ]]; then
+            if [[ "$DESKTOP_SESSION" == 'openbox' ]]; then
+                openbox --exit
+            elif [[ "$DESKTOP_SESSION" == 'bspwm' ]]; then
+                bspc quit
+            elif [[ "$DESKTOP_SESSION" == 'i3' ]]; then
+                i3-msg exit
+            elif [[ "$DESKTOP_SESSION" == 'hyprland' ]]; then
                 hyprctl dispatch exit
-			elif [[ "$DESKTOP_SESSION" == 'plasma' ]]; then
-				qdbus org.kde.ksmserver /KSMServer logout 0 0 0
-			fi
-		fi
-	else
-		exit 0
-	fi
+            elif [[ "$DESKTOP_SESSION" == 'plasma' ]]; then
+                qdbus org.kde.ksmserver /KSMServer logout 0 0 0
+            fi
+        fi
+    else
+        exit 0
+    fi
 }
 
 # Actions
 chosen="$(run_rofi)"
 case ${chosen} in
     $shutdown)
-		run_cmd --shutdown
+        run_cmd --shutdown
         ;;
     $reboot)
-		run_cmd --reboot
+        run_cmd --reboot
         ;;
     $lock)
-		if [[ -x '/usr/bin/betterlockscreen' || -x "$HOME/.local/bin/betterlockscreen" ]]; then
-			betterlockscreen -l dim --off 30
-		elif [[ -x '/usr/bin/i3lock' ]]; then
-			i3lock
-		elif [[ -x '/usr/bin/hyprlock' ]]; then
-			hyprlock
-		fi
+        if [[ -x '/usr/bin/betterlockscreen' || -x "$HOME/.local/bin/betterlockscreen" ]]; then
+            betterlockscreen -l dim --off 30
+        elif [[ -x '/usr/bin/i3lock' ]]; then
+            i3lock
+        elif [[ -x '/usr/bin/hyprlock' ]]; then
+            hyprlock
+        fi
         ;;
     $suspend)
-		run_cmd --suspend
+        run_cmd --suspend
         ;;
     $logout)
-		run_cmd --logout
+        run_cmd --logout
         ;;
 esac
