@@ -15,7 +15,7 @@ dir="$HOME/.config/rofi/powermenu/type-2"
 theme='style-7'
 
 # CMDs
-uptime="`uptime -p | sed -e 's/up //g'`"
+uptime="`uptime | sed -n 's/.*up[[:space:]]\+\([^,]*\),.*/\1/p'`"
 host=`hostname`
 
 # Options
@@ -24,6 +24,7 @@ reboot=''
 lock=''
 suspend=''
 logout=''
+monitoroff='󰶐'
 yes=''
 no=''
 
@@ -34,10 +35,11 @@ rofi_cmd() {
         -mesg "Uptime: $uptime" \
         -theme ${dir}/${theme}.rasi \
         -kb-select-1 'x' \
-        -kb-select-2 'u' \
-        -kb-select-3 'q' \
-        -kb-select-4 'r' \
-        -kb-select-5 's'
+        -kb-select-2 'd' \
+        -kb-select-3 'u' \
+        -kb-select-4 'q' \
+        -kb-select-5 'r' \
+        -kb-select-6 's'
     }
 
 # Confirmation CMD
@@ -62,7 +64,7 @@ confirm_exit() {
 
 # Pass variables to rofi dmenu
 run_rofi() {
-    echo -e "$lock\n$suspend\n$logout\n$reboot\n$shutdown" | rofi_cmd
+    echo -e "$lock\n$monitoroff\n$suspend\n$logout\n$reboot\n$shutdown" | rofi_cmd
 }
 
 # Execute Command
@@ -118,5 +120,8 @@ case ${chosen} in
         ;;
     $logout)
         run_cmd --logout
+        ;;
+    $monitoroff)
+        sleep 0.5; hyprctl dispatch dpms off
         ;;
 esac
